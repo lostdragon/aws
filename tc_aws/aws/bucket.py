@@ -8,7 +8,7 @@ import session as session_handler
 from tornado_botocore import Botocore
 from tornado.concurrent import return_future
 from thumbor.utils import logger
-
+from StringIO import StringIO
 
 class Bucket(object):
     """
@@ -85,7 +85,7 @@ class Bucket(object):
             callback=callback,
             Bucket=self._bucket,
             Key=self._clean_key(path),
-            Body=data,
+            Body=data.read() if isinstance(data, StringIO) else data,
             Metadata=metadata,
             StorageClass=storage_class,
         )
